@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/hy/桌面/电信2403-武晓健-算法组考核题目/应用_2/build",
+  "command": "/usr/bin/g++  -isystem /usr/local/include/opencv4 -g -o CMakeFiles/yingyong2.dir/yingyong2.cpp.o -c /home/hy/桌面/电信2403-武晓健-算法组考核题目/应用_2/yingyong2.cpp",
+  "file": "/home/hy/桌面/电信2403-武晓健-算法组考核题目/应用_2/yingyong2.cpp"
+}
+]

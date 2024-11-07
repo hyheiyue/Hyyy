@@ -1,0 +1,3 @@
+/home/hy/桌面/电信2403-武晓健-算法组考核题目/应用_2/cmake-build-debug/CMakeFiles/yingyong2.dir
+/home/hy/桌面/电信2403-武晓健-算法组考核题目/应用_2/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/hy/桌面/电信2403-武晓健-算法组考核题目/应用_2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
