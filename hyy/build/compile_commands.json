@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/hy/桌面/hyy/build",
+  "command": "/usr/bin/g++  -isystem /usr/local/include/opencv4 -g -o CMakeFiles/cv.dir/cv.cpp.o -c /home/hy/桌面/hyy/cv.cpp",
+  "file": "/home/hy/桌面/hyy/cv.cpp"
+}
+]

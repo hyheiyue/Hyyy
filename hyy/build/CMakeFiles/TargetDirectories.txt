@@ -1,0 +1,3 @@
+/home/hy/桌面/hyy/build/CMakeFiles/cv.dir
+/home/hy/桌面/hyy/build/CMakeFiles/edit_cache.dir
+/home/hy/桌面/hyy/build/CMakeFiles/rebuild_cache.dir
