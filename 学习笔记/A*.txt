@@ -1,0 +1,130 @@
+这是一份关于A*算法的基础模板（制作于2024年11月16日）version 1.0
+struct Node定义结构体，包含x，y坐标与预估代价实际代价与总代价；并制定了父节点以回溯路径
+ {
+    int x, y;                   // 坐标
+    int g = 0, h = 0, f = 0;    // g: 从起点到该节点的代价, h: 估算代价, f: 总代价 f = g + h
+    Node* parent = nullptr;     // 父节点，用于回溯路径
+
+    Node(int x, int y) : x(x), y(y) {}
+
+    bool operator==(const Node& other) const重载==判断两个节点是否重合
+     {
+        return x == other.x && y == other.y;
+    }
+    // 计算曼哈顿距离作为启发函数
+int heuristic(const Node& a, const Node& b) {
+    return std::abs(a.x - b.x) + std::abs(a.y - b.y);
+}
+
+// 检查一个坐标是否在网格范围内
+bool isValid(int x, int y, int rows, int cols) {
+    return x >= 0 && y >= 0 && x < rows && y < cols;
+}
+
+// 检查节点是否在关闭列表中
+bool isInList(const std::vector<Node*>& list, const Node& node) {
+    for (const auto& n : list) {
+        if (*n == node) {
+            return true;
+        }
+    }
+    return false;
+}
+// 回溯路径
+std::vector<Node> reconstructPath(Node* node) 可以理解为一个返回Node向量的函数
+{
+    std::vector<Node> path;定义Node结构向量path作为返回值
+    while (node) {
+        path.push_back(*node);添加节点
+        node = node->parent;回溯父节点
+    }
+    std::reverse(path.begin(), path.end());倒置向量
+    return path;返回回溯结果
+}
+std::vector<Node> aStar(const std::vector<std::vector<int>>& grid, Node start, Node goal)参数分别为二维向量作为二维地图，用其中的int判断空间属性，是否可通行，开始节点，终点节点
+ {
+    int rows = grid.size();得到地图行数便于处理把他对应给x
+    int cols = grid[0].size();得到地图列数便于处理把他对应给y
+    std::vector<Node*> openList;开放列表储存待探索的节点，选择代价最小的节点进行拓展
+    std::vector<Node*> closedList;关闭列表储存探索过的节点
+    
+    openList.push_back(new Node(start.x, start.y));植入起点
+    
+    while (!openList.empty())主循环
+     {
+        // 获取 开放列表f 值最小的节点
+        auto currentIt = std::min_element(openList.begin(), openList.end(), [](Node* a, Node* b) {return a->f < b->f;});选择开放列表f最小的节点
+        Node* current = *currentIt;拷贝给current
+
+        // 如果找到目标节点，回溯路径
+        if (*current == goal) 判断是否到终点
+        {
+            std::vector<Node> path = reconstructPath(current);//植入回溯函数
+            for (auto node : openList) delete node;
+            for (auto node : closedList) delete node;
+            return path;
+        }
+
+        // 从开放列表移除并添加到关闭列表
+        openList.erase(currentIt);
+        closedList.push_back(current);
+
+        // 四个方向
+        std::vector<std::pair<int, int>> directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        for (auto& [dx, dy] : directions) 遍历拓展
+        {
+            int newX = current->x + dx;拓展方向
+            int newY = current->y + dy;
+
+            // 跳过无效位置和障碍物
+            if (!isValid(newX, newY, rows, cols) || grid[newX][newY] == 1) continue;判断是否出界或者属于障碍空间
+
+            Node* neighbor = new Node(newX, newY);添加新node并初始化
+            if (isInList(closedList, *neighbor
+
+)) {
+                delete neighbor; // 如果邻居在关闭列表中，跳过
+                continue;
+            }
+
+            // 计算新的 g 值
+            int tentativeG = current->g + 1;当前代价+1
+
+            // 如果邻居已经在开放列表中，检查是否需要更新 g 值
+            auto openIt = std::find_if(openList.begin(), openList.end(), [&neighbor](Node* n) {
+                return *n == *neighbor;
+            });判断是否在开始列表
+
+            if (openIt != openList.end())如果已经被载入过
+             {
+                Node* existingNeighbor = *openIt;
+                if (tentativeG < existingNeighbor->g) 比较g值小的留下，无论如何都会使小的g赋给先前进入开放列表的变量，所以在下方要delete后进入的
+                {
+                    existingNeighbor->g = tentativeG;
+                    existingNeighbor->f = tentativeG + existingNeighbor->h;
+                    existingNeighbor->parent = current;父节点赋给被拓展者
+                }
+                delete neighbor; // 当前邻居已存在于开放列表，释放内存
+                continue;
+            }
+
+            // 如果邻居不在开放列表中，初始化并添加
+            neighbor->g = tentativeG;
+            neighbor->h = heuristic(*neighbor, goal);
+            neighbor->f = neighbor->g + neighbor->h;
+            neighbor->parent = current;
+            openList.push_back(neighbor);加入开放列表
+        }
+    }
+
+    // 如果无法到达目标点，返回空路径
+    for (auto node : openList) delete node;
+    for (auto node : closedList) delete node;
+    return {};
+}
+ std::vector<Node> path = aStar(grid, start, goal);调用算法，返回赋给path向量
+  if (!path.empty()) {
+       
+        for (const auto& node : path) {遍历回溯向量
+           
+        }
