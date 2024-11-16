@@ -1,0 +1,26 @@
+这是一篇介绍opencv中cv::Mat类的文章（制作于2024年11月16日）version1.0
+Mat类是一个用于表示图像和矩阵数据的核心数据结构。是一个多维数组，通常储存二维图像，Mat类储存的图像的一个像素可以理解为其中的数组中的一个元素，而像素属于cv::Vec某某类（与其通道，位数等有关）
+Mat类支持多通道数据，可用cv::cvtColor()转换，一般来说对多个图像进行联系需要其通道属性相同；
+构造：
+cv::Mat xxx;空的Mat
+cv::Mat xxx(rows,cols,type);制定大小与类型
+cv::Mat xxx（rows,cols,type,cv::Scalar(初始化各个像素的各通道属性)或者加入已有数据）
+cv::Mat xxx=cv::imread("图像路径“，cv::某某初始化图像类型，必要时添加）
+cv::Mat xxx=cv::Mat::AAA(rows,cols,type）AAA:zeros全零，ones全1,eye单位矩阵
+成员函数:
+行数=xxx.rows
+列数=xxx.cols
+通道数=xxx.channels()
+大小=xxx.Size()返回cv::size
+cv::Vec某某(或者某某类） 像素=xxx.at<cv::Vec某某（或者某某类)>(x,y)
+cv::Mat roi=xxx（cv::Rect(x,y(坐标）width,height（大小））截取子矩阵，感兴趣区域
+cv::Mat xxx2=xxx.clone()深拷贝
+cv::Mat xxx3=xxx浅拷贝（共享数据）
+cv::Mat xxx4        xxx.Copyto(xxx4)直接拷贝
+xxx.copyTO(xxx4,yanma)带掩码的拷贝（yanma要求单通道，大小与xxx相同(值为0拷贝，非0不拷贝)，xxx4类型与xxx一致）
+
+
+
+
+
+
