@@ -1,0 +1,250 @@
+在C++中，递归函数是指直接或间接调用自身的函数。包含多个递归调用的递归是指一个函数中递归调用自身多次，通常用于解决树形结构或分治法问题。以下是一些常见例子和实现方法。
+
+1. 二叉树遍历
+
+在处理树形结构时，每个节点通常递归调用其左右子节点，这就是典型的多次递归调用场景。
+
+例子：计算二叉树的节点总和
+
+#include <iostream>
+using namespace std;
+
+// 定义二叉树节点
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+// 递归计算二叉树的节点总和
+int sumTree(TreeNode* root) {
+    if (!root) return 0; // 递归终止条件
+    return root->val + sumTree(root->left) + sumTree(root->right); // 多次递归调用
+}
+
+int main() {
+    // 构建简单二叉树
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->left->left = new TreeNode(4);
+    root->left->right = new TreeNode(5);
+
+    cout << "二叉树节点总和: " << sumTree(root) << endl; // 输出 15
+    return 0;
+}
+
+2. 分治法 (Divide and Conquer)
+
+分治法常用于分解问题，解决子问题后合并结果，如经典的归并排序。
+
+例子：归并排序
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// 合并两个有序数组
+void merge(vector<int>& arr, int left, int mid, int right) {
+    vector<int> temp;
+    int i = left, j = mid + 1;
+    while (i <= mid && j <= right) {
+        if (arr[i] <= arr[j]) temp.push_back(arr[i++]);
+        else temp.push_back(arr[j++]);
+    }
+    while (i <= mid) temp.push_back(arr[i++]);
+    while (j <= right) temp.push_back(arr[j++]);
+    for (int k = left; k <= right; ++k) arr[k] = temp[k - left];
+}
+
+// 递归实现归并排序
+void mergeSort(vector<int>& arr, int left, int right) {
+    if (left >= right) return; // 递归终止条件
+    int mid = left + (right - left) / 2;
+    mergeSort(arr, left, mid);     // 左半部分递归
+    mergeSort(arr, mid + 1, right); // 右半部分递归
+    merge(arr, left, mid, right);  // 合并结果
+}
+
+int main() {
+    vector<int> arr = {5, 2, 9, 1, 5, 6};
+    mergeSort(arr, 0, arr.size() - 1);
+
+    cout << "排序后数组: ";
+    for (int num : arr) cout << num << " "; // 输出 1 2 5 5 6 9
+    cout << endl;
+    return 0;
+}
+
+3. 汉诺塔问题
+
+汉诺塔问题是经典的多次递归调用问题，每次递归会包含两个子问题。
+
+例子：解决汉诺塔问题
+
+#include <iostream>
+using namespace std;
+
+// 递归实现汉诺塔
+void hanoi(int n, char from, char to, char aux) {
+    if (n == 1) { // 递归终止条件
+        cout << "移动盘子 1 从 " << from << " 到 " << to << endl;
+        return;
+    }
+    hanoi(n - 1, from, aux, to); // 第一步：将 n-1 个盘子移动到辅助柱
+    cout << "移动盘子 " << n << " 从 " << from << " 到 " << to << endl; // 第二步：移动最大盘子
+    hanoi(n - 1, aux, to, from); // 第三步：将 n-1 个盘子移动到目标柱
+}
+
+int main() {
+    int n = 3; // 盘子数
+    hanoi(n, 'A', 'C', 'B'); // A 是起始柱, C 是目标柱, B 是辅助柱
+    return 0;
+}
+
+输出：
+
+移动盘子 1 从 A 到 C
+移动盘子 2 从 A 到 B
+移动盘子 1 从 C 到 B
+移动盘子 3 从 A 到 C
+移动盘子 1 从 B 到 A
+移动盘子 2 从 B 到 C
+移动盘子 1 从 A 到 C
+
+总结递归设计技巧
+
+	1.	明确递归终止条件：确保递归不会无限进行。
+	2.	分解问题：将复杂问题拆分为更小的子问题。
+	3.	处理每一层逻辑：关注每次调用的输入和输出。
+	4.	合并结果：在多次递归后，需要合并子问题的解。
+
+递归是一种通过调用自身解决问题的算法设计思想。在多次递归调用中，每次递归调用相当于拆分问题的一个子问题。我们只需要专注于两件事：
+
+	1.	递归终止条件：解决递归的最小单元，防止无限调用。
+	2.	递归关系式：将问题分解为更小的子问题，并通过多次递归调用整合答案。
+
+为什么需要多个递归调用？
+
+多个递归调用通常出现在需要分治或分支处理的场景。例如：
+
+	•	分支结构：如遍历树的左右子节点。
+	•	分治法：如归并排序，需要递归处理左右部分后合并结果。
+	•	动态规划的递归实现：分解多个子问题。
+
+以下结合递归三步法和具体例子深入分析。
+
+递归三步法
+
+	1.	明确函数的功能和输入输出：
+	•	你需要确定递归函数的功能是什么？它接受什么参数，返回什么结果。
+	2.	设定递归终止条件：
+	•	这是递归结束的条件，通常是问题被缩减到最小规模（如空节点、数组长度为1等）。
+	3.	分解问题 + 调用递归：
+	•	将原问题分解为一个或多个子问题，通过调用递归解决子问题，最后合并结果。
+
+实例分析
+
+1. 二叉树深度
+
+问题：如何通过递归求解二叉树的最大深度？
+
+思路分析
+
+	1.	函数功能：maxDepth(TreeNode* root)返回从当前节点到叶子节点的最大深度。
+	2.	递归终止条件：如果节点为空（root == nullptr），返回深度为0。
+	3.	递归关系：深度等于左右子树最大深度 + 1。
+
+代码实现
+
+#include <iostream>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+int maxDepth(TreeNode* root) {
+    if (root == nullptr) return 0; // 递归终止条件
+    int leftDepth = maxDepth(root->left);  // 左子树的深度
+    int rightDepth = maxDepth(root->right); // 右子树的深度
+    return max(leftDepth, rightDepth) + 1;  // 返回左右子树的最大深度 + 1
+}
+
+int main() {
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->left->left = new TreeNode(4);
+    root->left->right = new TreeNode(5);
+
+    cout << "二叉树最大深度: " << maxDepth(root) << endl; // 输出 3
+    return 0;
+}
+
+递归调用过程
+
+	1.	从根节点1开始：
+	•	递归调用左子树maxDepth(root->left)。
+	•	递归调用右子树maxDepth(root->right)。
+	2.	左子树继续递归调用2 -> 4 -> NULL，递归返回0。
+	3.	右子树递归返回1，最后根节点1返回3。
+
+2. Fibonacci数列
+
+问题：如何通过多次递归求解斐波那契数列？
+
+递归思路
+
+	1.	函数功能：fib(n)返回第n个斐波那契数。
+	2.	递归终止条件：n == 0返回0，n == 1返回1。
+	3.	递归关系：fib(n) = fib(n-1) + fib(n-2)。
+
+代码实现
+
+#include <iostream>
+using namespace std;
+
+int fib(int n) {
+    if (n == 0) return 0; // 递归终止条件
+    if (n == 1) return 1; // 递归终止条件
+    return fib(n - 1) + fib(n - 2); // 多次递归调用
+}
+
+int main() {
+    int n = 10;
+    cout << "斐波那契数列第 " << n << " 项: " << fib(n) << endl; // 输出 55
+    return 0;
+}
+
+递归调用过程
+
+	•	fib(10)需要计算fib(9)和fib(8)。
+	•	继续递归拆分：fib(9) = fib(8) + fib(7)，依次类推。
+	•	最终递归到底时，fib(1)和fib(0)返回基本值，然后逐层返回。
+
+3. 汉诺塔问题进一步解释
+
+汉诺塔问题是一个经典的多次递归调用的例子：
+
+	1.	函数功能：hanoi(n, from, to, aux)将n个盘子从from柱移动到to柱。
+	2.	递归终止条件：当n == 1时，直接将盘子从from移动到to。
+	3.	递归关系：
+	•	将n-1个盘子从from移动到aux柱。
+	•	将第n个盘子从from移动到to。
+	•	再将n-1个盘子从aux移动到to。
+
+递归过程解析
+
+以n = 3为例：
+
+	1.	第一步：hanoi(2, A, B, C)。
+	•	继续调用hanoi(1, A, C, B)，将最小盘子移动到C。
+	2.	第二步：移动3号盘到目标柱。
+	3.	第三步：再将hanoi(2, B, C, A)处理。
+
+
