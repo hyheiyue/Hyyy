@@ -31,9 +31,7 @@
     }
 [![pAs0cs1.md.jpg](https://s21.ax1x.com/2024/11/05/pAs0cs1.md.jpg)](https://imgse.com/i/pAs0cs1)
 ## 2 
-*colon支持导入vscode设置,支持多包编译与自动解析，利于多包项目的管理与维护；支持增量解析，避免修改项目未修改部分重复编译，提升工作效率；支持多种语言的包，可指定特定的包进行编译；具有独立的工作空间，避免变量冲突；会生成日志，定位错误位置,colion支持学生认证以免费使用,同时集成了assisstant生成式ai。
-[![pAyGWkj.png](https://s21.ax1x.com/2024/11/07/pAyGWkj.png)](https://imgse.com/i/pAyGWkj)
-[![pAyJmgP.md.png](https://s21.ax1x.com/2024/11/07/pAyJmgP.md.png)](https://imgse.com/i/pAyJmgP)
+*支持多包编译与自动解析，利于多包项目的管理与维护；支持增量解析，避免修改项目未修改部分重复编译，提升工作效率；支持多种语言的包，可指定特定的包进行编译；具有独立的工作空间，避免变量冲突；会生成日志，定位错误位置
 ## 3
 *先创建Dockerfile，再build
 ## 4
