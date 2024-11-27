@@ -1,0 +1,22 @@
+rosdep install --from-paths src --ignore-src -r -y一键安装依赖
+sudo chmod 777 /dev/ttyACM0   c板权限
+ros2 launch    
+source install/setup.bash   运行前必做
+colcon  build --symlink-install//默认独立包存放                    --merge-install//混合存放                     --install-base //指定编译产物路径
+--packages-select 某某包(单独编译）
+其它有用的 colcon build 参数：
+
+--packages-up-to 只构建你想要的包及其依赖，而不是整个工作空间（节省时间）
+
+--symlink-install > 命令可以创建配置文件的链接，这样在更改配置文件后可以不用重新编译。
+
+
+
+--event-handlers console_direct+ 构建时显示控制台输出（否则在 log 目录中查找日志）
+
+--executor sequential 一个接一个地处理包，而不是并行处理
+ros2 pkg create 某某 --build-type ament_cmake --dependencies 依赖包名(省的添加在cmake和.xml)创建功能包
+.msg 第一个字母要大写
+
+CMakeLists.txt与package.xml有依赖关系，Cmake中引用的包在.xml也要添加
+

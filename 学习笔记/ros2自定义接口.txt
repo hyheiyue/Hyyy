@@ -1,0 +1,28 @@
+ros2 pkg create 某某 --build-type ament_cmake //--dependencies rclcpp
+mkdir msg srv
+编辑msg srv 用.msg
+.msg .srv第一个字母要大写
+.xml添加
+<buildtool_depend>rosidl_default_generators</buildtool_depend>
+<exec_depend>rosidl_default_runtime</exec_depend>
+<member_of_group>rosidl_interface_packages</member_of_group>
+cmake添加
+find_package(geometry_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/Num.msg"
+  "msg/Sphere.msg"
+  "srv/AddThreeInts.srv"//自定义
+  DEPENDENCIES geometry_msgs # Add packages that above messages depend on, in this case geometry_msgs for Sphere.msg
+)
+ament_export_dependencies(rosidl_default_runtime)
+install(
+  DIRECTORY msg srv
+  DESTINATION share/${PROJECT_NAME}
+)
+对于使用接口者：
+cmake：
+find_package(某某  REQUIRED)
+.xml:
+<depend>某某</depend>
